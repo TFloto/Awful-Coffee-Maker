@@ -1,7 +1,18 @@
 #include <ESP8266WiFi.h>        // Include the Wi-Fi library
+#include <ESP8266WebServer.h>
 
 const char* ssid     = "ImUrHuckleberry";         // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "Password#1";     // The password of the Wi-Fi network
+
+ESP8266WebServer webserver(80);
+
+void rootPage() { 
+  webserver.send(200, "text/plain", "pee my balls"); 
+}
+
+void notfoundPage(){ 
+  webserver.send(404, "text/plain", "404: Not found"); 
+}
 
 void setup() {
   Serial.begin(115200);         // Start the Serial communication to send messages to the computer
@@ -9,6 +20,7 @@ void setup() {
   Serial.println('\n');
   
   WiFi.begin(ssid, password);             // Connect to the network
+  Serial.println();
   Serial.print("Connecting to ");
   Serial.print(ssid); Serial.println(" ...");
 
@@ -24,4 +36,6 @@ void setup() {
   Serial.println(WiFi.localIP());         // Send the IP address of the ESP8266 to the computer
 }
 
-void loop() { }
+void loop(void){
+   webserver.handleClient();  
+ }
